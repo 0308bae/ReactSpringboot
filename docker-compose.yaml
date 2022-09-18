@@ -1,0 +1,52 @@
+version: '3'
+services:
+  spring:
+    image: backend
+    build: ./backend
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    container_name: ${BACKEND_NAME}
+    depends_on:
+      - db
+
+  react:
+    image: frontend
+    build: ./frontend
+    depends_on:
+      - spring
+    expose:
+      - ${FRONTEND_PORT}
+    container_name: ${FRONTEND_NAME}
+
+  nginx:
+    image: nginx:1
+    volumes:
+      - ./nginx:/etc/nginx
+    ports:
+      - 80:80
+    depends_on:
+      - react
+      - spring
+    container_name: nginx
+    environment:
+      - BACKEND_NAME=${BACKEND_NAME}
+      - BACKEND_PORT=${BACKEND_PORT}
+      - FRONTEND_NAME=${FRONTEND_NAME}
+      - FRONTEND_PORT=${FRONTEND_PORT}
+
+  db:
+    image: mariadb:10
+    container_name: db
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+    volumes:
+      - ./db/conf.d:/etc/mysql/conf.d
+      - ./db/data:/var/lib/mysql
+    environment:
+      - MARIADB_USER=${MYSQL_USER}
+      - MARIADB_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MARIADB_DATABASE=${MYSQL_DATABASE}
+      - MARIADB_PORT=${MYSQL_PORT}
+      - MARIADB_HOST=${MYSQL_HOST}
+    restart: always
+
