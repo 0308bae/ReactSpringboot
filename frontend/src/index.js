@@ -2,6 +2,18 @@ import React, {useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
+function handleSubmit(event) {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+
+    const value = data.get('email');
+
+    console.log({ value });
+}
+
+document.querySelector('form').addEventListener('submit', handleSubmit);
+
 function Hello(){
     const [data, setData] = useState("");
     const [name, setName] = useState("");
