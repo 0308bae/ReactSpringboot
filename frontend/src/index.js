@@ -12,8 +12,6 @@ function handleSubmit(event) {
     console.log({ value });
 }
 
-document.querySelector('form').addEventListener('submit', handleSubmit);
-
 function Hello(){
     const [data, setData] = useState("");
     const [name, setName] = useState("");
@@ -38,7 +36,7 @@ function Write() {
 
     return (
         <div className='Write'>
-            <form action="/hello/posts" method="post">
+            <form action="/hello/posts" method="post" onSubmit={handleSubmit}>
                 <div>
                     <input type='text' id='title' name='title' placeholder='제목'/>
                 </div>
