@@ -49,6 +49,7 @@ function Write() {
                 </div>
             </form>&nbsp;&nbsp;
             <Hello/>
+            <Hello/>
         </div>
     );
 }
