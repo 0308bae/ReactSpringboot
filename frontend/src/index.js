@@ -3,12 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 function handleSubmit(event) {
-
+    event.preventDefault();
     const data = new FormData(event.target);
-
-    const value = data.get('email');
-
-    console.log({ value });
+    const value = Object.fromEntries(data.entries());
+    let model = {
+        method: 'POST',
+        body: value,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    fetch(`/hello/posts`, model);
 }
 
 function Hello(){
@@ -35,7 +40,7 @@ function Write() {
 
     return (
         <div className='Write'>
-            <form action="/hello/posts" method="post" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} action="/hello/posts" method="post" id="formTable">
                 <div>
                     <input type='text' id='title' name='title' placeholder='제목'/>
                 </div>
