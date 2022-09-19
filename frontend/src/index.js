@@ -8,12 +8,20 @@ function handleSubmit(event) {
     const value = Object.fromEntries(data.entries());
     let model = {
         method: 'POST',
-        body: value,
+        body: JSON.stringify(value),
         headers: {
             'Content-Type': 'application/json'
         }
     };
-    fetch(`/hello/posts`, model);
+    fetch(`/hello/posts`, model)
+        .then((response) => response.json())
+        .then((value) => {
+            console.log(value);
+        })
+        .catch(
+            (e) => {
+                console.log(e);
+            });
 }
 
 function Hello(){
