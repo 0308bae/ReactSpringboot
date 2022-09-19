@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 function handleSubmit(event) {
-    event.preventDefault();
 
     const data = new FormData(event.target);
 
@@ -48,7 +47,6 @@ function Write() {
                     <button>취소</button>
                 </div>
             </form>&nbsp;&nbsp;
-            <Hello/>
             <Hello/>
         </div>
     );
