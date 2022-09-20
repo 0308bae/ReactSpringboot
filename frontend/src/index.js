@@ -8,26 +8,27 @@ import './index.css';
 class List extends React.Component{
     constructor(props) {
         super(props);
-        fetch("/board/posts/list")
+        fetch("/board/posts/1")
             .then(res => res.text())
             .then(data => {
                 console.log(data);
+                data = data.json();
             })
     }
 
     render() {
-        const list = []
-        for(let i = 0; i < this.state.postList.length; i++){
-            list.push(
-                <div className="post" key={i}>
-                    {this.state.postList.get(i)}
-                </div>
-            )
-        }
         return (
             <div className='List'>
-                {list}
-            </div>
+                {
+                    this.state.data.map(
+                        post =>
+                            <tr key={post.boardId}>
+                                <td> {post.title} </td>
+                                <td> {post.contents} </td>
+                            </tr>
+                    )
+                }
+                </div>
         )
     }
 }
