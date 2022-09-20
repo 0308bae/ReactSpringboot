@@ -9,7 +9,10 @@ class List extends React.Component{
     constructor(props) {
         super(props);
         fetch("/board/posts/list")
-            .then(res => console.log(res))
+            .then(res => res.text())
+            .then(data => {
+                console.log(data);
+            })
     }
 
     render() {
