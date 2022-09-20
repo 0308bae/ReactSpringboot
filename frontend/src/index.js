@@ -7,20 +7,18 @@ import './index.css';
 
 class List extends React.Component{
     constructor(props) {
+        let post;
         super(props);
         fetch("/board/posts/1")
-            .then(res => res.text())
-            .then(data => {
-                console.log(data);
-                data = data.json();
-            })
+            .then(data => data.json())
+            .then(res => post = res);
     }
 
     render() {
         return (
             <div className='List'>
                 {
-                    this.state.data.map(
+                    this.state.post.map(
                         post =>
                             <tr key={post.boardId}>
                                 <td> {post.title} </td>
