@@ -3,8 +3,8 @@ services:
   spring:
     image: backend
     build: ./backend
-    expose:
-      - ${BACKEND_PORT}
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
     container_name: ${BACKEND_NAME}
     depends_on:
       - db
