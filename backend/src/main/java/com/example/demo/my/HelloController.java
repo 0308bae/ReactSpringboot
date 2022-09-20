@@ -35,6 +35,7 @@ public class HelloController {
     public BoardDto findById(@PathVariable Long id) {
         return boardService.findById(id);
     }
+
     @GetMapping("/board/posts/list")
     public List<BoardDto> findAllDesc() {
         return boardService.findAllDesc();
