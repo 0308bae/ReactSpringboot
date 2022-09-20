@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    @Query("SELECT p FROM Board p ORDER BY p.boardId DESC")
+    @Query(value = "SELECT * FROM Board ORDER BY boardId DESC", nativeQuery = true)
     List<Board> findAllDesc();
 
 }
