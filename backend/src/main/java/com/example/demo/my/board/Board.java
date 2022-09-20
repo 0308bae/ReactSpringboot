@@ -29,4 +29,9 @@ public class Board implements Serializable {
         this.contents = contents;
     }
 
+    public void update(String title, String content) {
+        this.title = title;
+        this.contents = content;
+    }
+
 }
