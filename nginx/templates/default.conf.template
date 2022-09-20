@@ -4,8 +4,8 @@ server {
 
 	proxy_set_header host localhost;
 	server_name localhost;
-	location /hello {
-		proxy_pass http://${BACKEND_NAME}:${BACKEND_PORT}/hello;
+	location /board {
+		proxy_pass http://${BACKEND_NAME}:${BACKEND_PORT}/board;
 	}
  	location / {
                 proxy_pass http://${FRONTEND_NAME}:${FRONTEND_PORT}/;
