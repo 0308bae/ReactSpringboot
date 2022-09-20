@@ -11,6 +11,7 @@ class List extends React.Component{
         let data;
         fetch("/board/posts/list")
             .then(res => res.json())
+            .then(res => console.log(res))
             .then(res => data = res);
         this.state = {
             postList: data,
