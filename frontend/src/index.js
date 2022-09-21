@@ -1,32 +1,39 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-
-
-
+import Write from "./post";
 
 class List extends React.Component{
     constructor(props) {
-        let post;
         super(props);
-        fetch("/board/posts/1")
+        this.state = {
+            posts: [],
+        }
+        fetch("/board/posts/list")
             .then(data => data.json())
-            .then(res => post = res);
+            .then(res => {
+                this.setState({
+                    posts: res,
+                })
+            })
     }
 
     render() {
         return (
-            <div className='List'>
+            <div>
                 {
-                    this.state.post.map(
-                        post =>
-                            <tr key={post.boardId}>
-                                <td> {post.title} </td>
-                                <td> {post.contents} </td>
-                            </tr>
-                    )
+                    this.state.posts.map(
+                        post => {
+                            return (
+                                <div key={post.boardId} className="outerBox">
+                                    <div> {post.title} </div>
+                                    <div> {post.contents} </div>
+                                </div>
+                            )
+                        })
                 }
-                </div>
+                <Write/>
+            </div>
         )
     }
 }

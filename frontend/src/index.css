@@ -52,3 +52,8 @@ ol, ul {
 .selected {
   background: #282c34;
 }
+
+.outerBox {
+  border: 1px solid #999;
+  float: left;
+}

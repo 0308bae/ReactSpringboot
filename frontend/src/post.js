@@ -12,14 +12,7 @@ function handleSaveSubmit(event) {
         }
     };
     fetch(`/board/posts`, model)
-        .then((response) => response.json())
-        .then((value) => {
-            console.log(value);
-        })
-        .catch(
-            (e) => {
-                console.log(e);
-            });
+        .then((response) => response.json());
 }
 
 function Write() {
@@ -41,3 +34,5 @@ function Write() {
         </div>
     );
 }
+
+export default Write;
