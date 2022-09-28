@@ -26,6 +26,7 @@ class List extends React.Component{
                         post => {
                             return (
                                 <div key={post.boardId} className="outerBox">
+                                    <div> {post.boardId} </div>
                                     <div> {post.title} </div>
                                     <div> {post.contents} </div>
                                 </div>

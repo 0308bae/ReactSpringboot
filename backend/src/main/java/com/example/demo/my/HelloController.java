@@ -27,7 +27,7 @@ public class HelloController {
     }
 
     @PutMapping("/board/posts/{id}")
-    public Long delete(@PathVariable Long id, @RequestBody BoardUpdateDto requestDto) {
+    public Long update(@PathVariable Long id, @RequestBody BoardUpdateDto requestDto) {
         return boardService.update(id, requestDto);
     }
 

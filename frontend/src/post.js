@@ -15,6 +15,18 @@ function handleSaveSubmit(event) {
         .then((response) => response.json());
 }
 
+function handleDeletePost(event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const value = Object.fromEntries(data.entries());
+    const id = value.id;
+    let model = {
+        method: 'DELETE'
+    };
+    fetch(`/board/posts/` + id, model)
+        .then((response) => response.json());
+}
+
 function Write() {
 
     return (
@@ -30,6 +42,13 @@ function Write() {
                     <button type="submit">저장</button>
                     <input type="reset"/>
                 </div>
+            </form>
+
+            <form onSubmit={handleDeletePost} method="post" id="formTable">
+                <div>
+                    <input type='text' id='id' name='id' placeholder='ID'/>
+                </div>
+                <button type="submit">지우기</button>
             </form>
         </div>
     );

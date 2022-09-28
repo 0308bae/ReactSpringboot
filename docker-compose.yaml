@@ -16,6 +16,9 @@ services:
       - spring
     expose:
       - ${FRONTEND_PORT}
+    environment:
+       - WDS_SOCKET_HOST=0.0.0.0
+       - WDS_SOCKET_PORT=0
     container_name: ${FRONTEND_NAME}
 
   nginx:
