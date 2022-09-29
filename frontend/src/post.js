@@ -12,7 +12,8 @@ function handleSaveSubmit(event) {
         }
     };
     fetch(`/board/posts`, model)
-        .then((response) => response.json());
+        .then((response) => response.json())
+        .then(() => windows.location.reload());
 }
 
 function handleDeletePost(event) {
@@ -24,7 +25,8 @@ function handleDeletePost(event) {
         method: 'DELETE'
     };
     fetch(`/board/posts/` + id, model)
-        .then((response) => response.json());
+        .then((response) => response.json())
+        .then(() => windows.location.reload());
 }
 
 function Write() {
