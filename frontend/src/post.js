@@ -13,7 +13,7 @@ function handleSaveSubmit(event) {
     };
     fetch(`/board/posts`, model)
         .then((response) => response.json())
-        .then(() => windows.location.reload());
+        .then(() => window.location.reload());
 }
 
 function handleDeletePost(event) {
@@ -26,7 +26,7 @@ function handleDeletePost(event) {
     };
     fetch(`/board/posts/` + id, model)
         .then((response) => response.json())
-        .then(() => windows.location.reload());
+        .then(() => window.location.reload());
 }
 
 function Write() {
