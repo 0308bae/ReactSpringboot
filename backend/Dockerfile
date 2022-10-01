@@ -1,13 +1,13 @@
 FROM gradle:jdk18
 
-ENV VERSION 0.0.0
-ENV PROJECTNAME demo
-
 WORKDIR /app
 
 COPY . .
 
+RUN sed -i -e 's/\r$//' ./gradlew
+
 RUN chmod +x ./gradlew
+
 RUN ./gradlew build
 
 EXPOSE 8080
