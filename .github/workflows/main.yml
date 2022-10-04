@@ -1,50 +1,68 @@
-# This is a basic workflow to help you get started with Actions
+name: CI-CD
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # 지정한 branch에서 push/pull_request 에 해당하는 command가 수행되면 이 workflow가 동작 합니다. 
-  # 여기서는 간단히 main 브런치에서 push되면서 이 workflow가 실행 되도록 하겠습니다.
   push:
-    branches: [ main ] 
- 
-  # 이부분은 위의 trigger가 없어도 수동으로 동작 할 수 있게끔 해주는 역할을 합니다.
-  workflow_dispatch:
+    branches:
+      - main
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  S3_BUCKET_NAME: demobukkit
+  RESOURCE_PATH: ./backend/src/main/resources/application.properties
+  CODE_DEPLOY_APPLICATION_NAME: github-action-cd
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: aym
+
 jobs:
-  # This workflow contains a single job called "build" 
   build:
     runs-on: ubuntu-latest
-    
-    steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - name: checkout release
-      uses: actions/checkout@v3
 
-    # Runs a single command using the runners shell 
-    - name: Clean temp directory
-      run: |
-        rm -rf *
-        cp -r $GITHUB_WORKSPACE . 
-      
-    - name: archive drcloud 
-      run: tar cvfz ./drcloud.tar.gz *
-       
-    - name: AWS configure credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.SECRET_KEY }}
-        aws-region: ap-northeast-2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
         
-    - name: upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./drcloud.tar.gz s3://demobukkit/AYM/
-      
-    - name: deploy with AWS codeDeploy
-      run: aws deploy create-deployment
-        --application-name github-action-cd
-        --deployment-config-name CodeDeployDefault.OneAtATime
-        --deployment-group-name aym
-        --s3-location bucket=demobukkit,bundleType=tgz,key=archive/drcloud.tar.gz
+        # [1]
+      - name: Set yaml file 
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }} 
+        env:
+          override.value: ${{ secrets.DI_FROM_SECRET }} 
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
+        # [2]
+      - name: Build with Gradle
+        run: ./gradlew build
+        shell: bash
+
+        # [3]
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
+
+        # [4]
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+          aws-region: ${{ secrets.AWS_REGION }} 
+
+        # [5]
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+
+        # [6]
+      - name: Code Deploy
+        run: | 
+          aws deploy create-deployment \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+          --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
