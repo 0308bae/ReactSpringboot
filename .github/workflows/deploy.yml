@@ -41,7 +41,6 @@ jobs:
         
       - name: Generate deployment package
         run: |
-          cd ./backend
           mkdir -p before-deploy
           cp scripts/*.sh before-deploy/
           cp appspec.yml before-deploy/
