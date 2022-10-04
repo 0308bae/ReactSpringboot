@@ -8,13 +8,16 @@ on:
 
 env:
   S3_BUCKET_NAME: demobukkit
-  RESOURCE_PATH: ./backend/src/main/resources/application.properties
   CODE_DEPLOY_APPLICATION_NAME: github-action-cd
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: aym
+  PROJECT_NAME: ReactSpringboot
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout
@@ -33,19 +36,21 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
-
-        # [3]
-      - name: Make zip file
-        run: zip -r ./$GITHUB_SHA.zip .
+        
+      - name: Generate deployment package
+        run: |
+          mkdir -p before-deploy
+          cp scripts/*.sh before-deploy/
+          cp appspec.yml before-deploy/
+          cp build/libs/*.jar before-deploy/
+          cd before-deploy && zip -r before-deploy *
+          cd ../ && mkdir -p deploy
+          mv before-deploy/before-deploy.zip deploy/$PROJECT_NAME.zip
         shell: bash
 
-        # [4]
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
-          aws-region: ${{ secrets.AWS_REGION }} 
+      - name: Make zip file
+        run: zip -r ./$PROJECT_NAME.zip .
+        shell: bash
 
         # [5]
       - name: Upload to S3
