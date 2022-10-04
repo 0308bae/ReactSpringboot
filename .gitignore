@@ -310,4 +310,4 @@ gradle-app.setting
 
 db/data/**
 *.sh
-*.properties
+application.properties
