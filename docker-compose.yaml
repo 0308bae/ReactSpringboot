@@ -1,25 +1,25 @@
 version: '3'
 services:
-  spring:
+  spring-blue:
     image: backend
     build: ./backend
     ports:
-      - ${BACKEND_PORT}:${BACKEND_PORT}
-    container_name: ${BACKEND_NAME}
+      - ${BLUE_BACKEND_PORT}:${BLUE_BACKEND_PORT}
+    container_name: ${BLUE_BACKEND_NAME}
     depends_on:
       - db
 
-  react:
+  react-blue:
     image: frontend
     build: ./frontend
     depends_on:
-      - spring
-    expose:
-      - ${FRONTEND_PORT}
+      - spring-blue
+    ports:
+      - ${BLUE_FRONTEND_PORT}:${BLUE_FRONTEND_PORT}
     environment:
        - WDS_SOCKET_HOST=0.0.0.0
        - WDS_SOCKET_PORT=0
-    container_name: ${FRONTEND_NAME}
+    container_name: ${BLUE_FRONTEND_NAME}
 
   nginx:
     image: nginx:1
@@ -28,14 +28,18 @@ services:
     ports:
       - 80:80
     depends_on:
-      - react
-      - spring
+      - react-blue
+      - spring-blue
     container_name: nginx
     environment:
-      - BACKEND_NAME=${BACKEND_NAME}
-      - BACKEND_PORT=${BACKEND_PORT}
-      - FRONTEND_NAME=${FRONTEND_NAME}
-      - FRONTEND_PORT=${FRONTEND_PORT}
+      - BLUE_BACKEND_NAME=${BLUE_BACKEND_NAME}
+      - BLUE_BACKEND_PORT=${BLUE_BACKEND_PORT}
+      - GREEN_BACKEND_NAME=${GREEN_BACKEND_NAME}
+      - GREEN_BACKEND_PORT=${GREEN_BACKEND_PORT}
+      - BLUE_FRONTEND_NAME=${BLUE_FRONTEND_NAME}
+      - BLUE_FRONTEND_PORT=${BLUE_FRONTEND_PORT}
+      - GREEN_FRONTEND_NAME=${GREEN_FRONTEND_NAME}
+      - GREEN_FRONTEND_PORT=${GREEN_FRONTEND_PORT}
 
   db:
     image: mariadb:10

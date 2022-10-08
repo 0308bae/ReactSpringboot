@@ -10,8 +10,6 @@ RUN chmod +x ./gradlew
 
 RUN ./gradlew build
 
-EXPOSE 8080
-
 WORKDIR /app/build/libs
 
 CMD ["java", "-jar", "./demo-0.0.0.jar"]
