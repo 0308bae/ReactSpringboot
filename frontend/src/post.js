@@ -38,7 +38,7 @@ function Write() {
                     <input type='text' id='title' name='title' placeholder='제목'/>
                 </div>
                 <div>
-                    <input id='contents' name='contents' placeholder='내용'/>
+                    <input id='contents' name='contents' placeholder='게시글 내용'/>
                 </div>
                 <div id="submit_btn">
                     <button type="submit">저장</button>
