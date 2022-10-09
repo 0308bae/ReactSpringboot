@@ -29,8 +29,8 @@ sleep 60
 
 IS_EXIST_AFTER=$(docker ps | grep backend-${AFTER_COMPOSE_COLOR})
 if [ -n "$IS_EXIST_AFTER" ]; then
-    docker exec -it nginx cp /etc/nginx/conf.d/${AFTER_COMPOSE_COLOR}.conf /etc/nginx/conf.d/default.conf
-    docker exec -it nginx nginx -s reload
+    docker exec -i nginx cp /etc/nginx/conf.d/${AFTER_COMPOSE_COLOR}.conf /etc/nginx/conf.d/default.conf
+    docker exec -i nginx nginx -s reload
     cd /home/ec2-user/github_action
     docker-compose -f docker-compose-${BEFORE_COMPOSE_COLOR}.yaml down
     echo "$BEFORE_COMPOSE_COLOR down"
