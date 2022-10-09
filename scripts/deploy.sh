@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IS_DB_UP=$(docker ps -q -f name=db)
+IS_DB_UP=$(docker ps -q -f name=nginx)
 if [ -z "$IS_DB_UP" ]; then
     echo "init up"
     docker-compose -f docker-compose.yaml up --build -d
