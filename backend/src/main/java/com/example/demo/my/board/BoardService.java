@@ -23,20 +23,20 @@ public class BoardService {
 
     public void delete(Long id) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다!"));
         boardRepository.delete(board);
     }
 
     public Long update(Long id, BoardUpdateDto boardUpdateDto) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다!"));
         board.update(boardUpdateDto.getTitle(), boardUpdateDto.getContents());
         return id;
     }
 
     public BoardDto findById(Long id) {
         Board entity = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다!"));
         return new BoardDto(entity);
     }
 

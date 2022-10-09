@@ -35,7 +35,7 @@ function Write() {
         <div className='Write'>
             <form onSubmit={handleSaveSubmit} method="post" id="formTable">
                 <div>
-                    <input type='text' id='title' name='title' placeholder='제목'/>
+                    <input type='text' id='title' name='title' placeholder='게시글 제목'/>
                 </div>
                 <div>
                     <input id='contents' name='contents' placeholder='게시글 내용'/>
